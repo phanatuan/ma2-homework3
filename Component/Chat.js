@@ -10,16 +10,21 @@ class Chat extends React.Component {
     }
   }
 
-  // componentWillMount = () => {
-
-  //   const messageRef = database.ref('messages');
-  //   console.log(' ..... Message Ref');
-  //   console.log(messageRef);
-  //   messageRef.on('child_added', snapShot => {
-  //     console.log('..... Snapshot');
-  //     console.log(snapShot.val);
-  //   });
-  // };
+  componentWillMount = () => {
+    const messageRef = database.ref('messages');
+    messageRef.on('child_added', snapShot => {
+      const {text, user} = snapShot.val();
+      const {key: _id} = snapShot;
+      const message = { 
+        text, 
+        user, 
+        _id
+      };
+      this.setState({
+        messages: [message,...this.state.messages ]
+      })
+    });
+  };
 
   onSend = messages => {
     console.log('.... On Press Send');
